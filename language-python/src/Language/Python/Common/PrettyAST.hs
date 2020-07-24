@@ -228,6 +228,7 @@ instance Pretty (CompIter a) where
    pretty (IterFor { comp_iter_for = compFor }) = pretty compFor
    pretty (IterIf { comp_iter_if = compIf }) = pretty compIf
 
+paren x = text "(" <> x <> text ")"
 instance Pretty (Expr a) where
    pretty (Var { var_ident = i }) = pretty i
    pretty (Int { expr_literal = str }) = text str
@@ -257,8 +258,8 @@ instance Pretty (Expr a) where
    pretty (Tuple { tuple_exprs = es }) =
       case es of
          [] -> text "()"
-         [e] -> pretty e <> comma
-         _ -> commaList es
+         [e] -> paren $ pretty e <> comma
+         _ -> paren $ commaList es
    pretty (Yield { yield_arg = arg })
       = text "yield" <+> pretty arg
    pretty (Generator { gen_comprehension = gc }) = parens $ pretty gc
